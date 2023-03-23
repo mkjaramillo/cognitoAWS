@@ -1,0 +1,36 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: >
+  cognito
+
+  Sample SAM Template for cognito
+
+
+
+Resources:
+  UserPool:
+    Type: AWS::Cognito::UserPool
+    Properties:
+      UserPoolName: external-api-consummer
+
+  MyResourceServer:
+    Type: AWS::Cognito::UserPoolResourceServer
+    Properties:
+      UserPoolId: !Ref UserPool
+      Identifier: zoho-crm
+      Name: zoho-crm-resource-server
+      Scopes:
+        - ScopeName: notification.read
+          ScopeDescription: Read Notification
+        - ScopeName: claims.read
+          ScopeDescription: Get Claims by Roll by User Mail
+        - ScopeName: notification.create
+          ScopeDescription: Create Notification
+  
+  MyUserPoolClient:
+    Type: AWS::Cognito::UserPoolClient
+    Properties:
+      ClientName: zoho-crm-client
+      UserPoolId: !Ref UserPool
+      
+
